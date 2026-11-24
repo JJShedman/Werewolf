@@ -7,9 +7,14 @@ public class FPSGun : MonoBehaviour
 
     public float damage = 10f;
     public float range = 100f;
+    public float fireRate = 15f;
+
 
     public Camera fpsCam;
     public ParticleSystem muzzelFlash;
+
+    public GameObject impatEffect;
+    public float ImpactForce = 30f;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +46,13 @@ public class FPSGun : MonoBehaviour
                 {
                     target.takeDamage(damage);
                 }
+                if(hit.rigidbody != null)
+                {
+                    hit.rigidbody.AddForce(-hit.normal * ImpactForce);
+                }
+               
+               GameObject impactGo = Instantiate(impatEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(impactGo, 2f);
             }
         }
     }
